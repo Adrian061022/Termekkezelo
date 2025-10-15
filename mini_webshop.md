@@ -48,6 +48,133 @@ $this->addStockColumnIfMissing();
 3. Tábla létrehozása: createTableIfNotExists().
 4. Stock oszlop ellenőrzése: addStockColumnIfMissing().
 
+### Tábla létrehozása
+
+```php
+$sqlCreate = "CREATE TABLE IF NOT EXISTS products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    price FLOAT NOT NULL,
+    description TEXT,
+    stock INT(11) NOT NULL DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)";
+$this->db->exec($sqlCreate);
+```
+- IF NOT EXISTS: nem hozza létre újra, ha már létezik.
+- AUTO_INCREMENT: automatikusan növekvő ID.
+- created_at: automatikusan rögzíti a létrehozás idejét.
+
+## CRUD függvények
+
+### Összes termék lekérése:
+```php
+public function getAll(): array {
+    $stmt = $this->db->query("SELECT * FROM products ORDER BY id DESC");
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+```
+- ORDER BY id DESC: a legújabb termékek jelennek meg először.
+- PDO::FETCH_ASSOC: asszociatív tömböt ad vissza.
+
+### Termék hozzáadása:
+  ```php
+public function add(string $name, float $price, string $description, int $stock): bool {
+    $stmt = $this->db->prepare(
+        "INSERT INTO products (name, price, description, stock) VALUES (?, ?, ?, ?)"
+    );
+    return $stmt->execute([$name, $price, $description, $stock]);
+}
+```
+- prepare + execute: biztonságos SQL beszúrás.
+- Paraméterek ?-ekkel, hogy elkerüljük az SQL injectiont.
+
+## Webes felület (index.view.php)
+
+Az oldal lehetővé teszi a termékek listázását, szerkesztését és törlését:
+```html
+<h2>Új termék hozzáadása</h2>
+<form method="post">
+    <input type="hidden" name="action" value="add">
+    <input type="text" name="name" placeholder="Termék neve" required>
+    <input type="number" name="price" placeholder="Ár (Ft)" required>
+    <textarea name="description" placeholder="Leírás"></textarea>
+    <input type="number" name="stock" placeholder="Készlet" required>
+    <button type="submit">Hozzáadás</button>
+</form>
+```
+- action="add": POST kérés kezelése az index.php-ban.
+- required: kötelező mezők.
+- <textarea> a hosszabb leírásoknak.
+
+### Terméklista
+```html
+<table>
+    <thead>
+        <tr>
+            <th>ID</th><th>Név</th><th>Ár</th><th>Leírás</th><th>Készlet</th><th>Művelet</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($products as $product): ?>
+            <tr>
+                <td><?= htmlspecialchars($product['id']) ?></td>
+                <td><?= htmlspecialchars($product['name']) ?></td>
+                <td><?= htmlspecialchars($product['price']) ?> Ft</td>
+                <td><?= htmlspecialchars($product['description']) ?></td>
+                <td><?= htmlspecialchars($product['stock']) ?></td>
+                <td>
+                    <form method="post" style="display:inline;">
+                        <input type="hidden" name="action" value="delete">
+                        <input type="hidden" name="id" value="<?= $product['id'] ?>">
+                        <button type="submit">🗑️ Törlés</button>
+                    </form>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+```
+- htmlspecialchars: biztonságos megjelenítés.
+- Külön form minden művelethez (törlés, szerkesztés).
+
+## CLI támogatás (index.php)
+A parancssorból is kezelhetők a termékek:
+
+```php
+$isCLI = php_sapi_name() === 'cli';
+
+if ($isCLI) {
+    $action = $argv[1] ?? null;
+    switch ($action) {
+        case 'add':
+            $product->add($argv[2], (float)$argv[3], $argv[4] ?? '', (int)($argv[5] ?? 0));
+            echo "Termék hozzáadva: {$argv[2]}\n";
+            break;
+        case 'delete':
+            $product->delete((int)$argv[2]);
+            echo "Termék törölve: ID {$argv[2]}\n";
+            break;
+        case 'list':
+            $products = $product->getAll();
+            foreach ($products as $p) {
+                echo "{$p['id']} | {$p['name']} | {$p['price']} Ft | {$p['description']} | {$p['stock']}\n";
+            }
+            break;
+    }
+}
+```
+1. php_sapi_name() === 'cli': CLI környezet ellenőrzése.
+2. $argv: parancssori argumentumok.
+3 Switch/case a műveletekhez.
+
+## Használat
+1. Weben: Böngészőből az index.php-t megnyitva lehet termékeket kezelni.
+2. CLI: Parancssorból:
+
+php index.php add "Laptop" 3500000 "Erős laptop" 5
+php index.php delete 3
+php index.php list
 ---
 ## Működési logika
 
