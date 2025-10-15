@@ -338,6 +338,7 @@ class Product {
     }
 }
 ?>
+```
 </details>
 <details><summary>App/Services/ProductManager.php</summary>
 
