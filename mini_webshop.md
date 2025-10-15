@@ -342,6 +342,8 @@ class Product {
 </details>
 <details><summary>App/Services/ProductManager.php</summary>
 
+```php
+
 <?php
 namespace App\Services;
 
@@ -376,8 +378,11 @@ class Database {
     }
 }
 ?>
+```
 </details>
 <details><summary>App/Views/index.view.php</summary>
+
+```php
 
 <!DOCTYPE html>
 <html lang="hu">
@@ -460,9 +465,12 @@ button:hover { background: #34495e; }
 <?php endif; ?>
 </body>
 </html>
+```
 </details>
 
 <details><summary>index.php</summary>
+
+```php
 
 <?php
 require_once 'App/Models/Product.php';
@@ -515,4 +523,5 @@ if ($isCLI) {
     $products = $product->getAll();
     require_once 'App/Views/index.view.php';
 }
-</details> ```
+```
+</details> 
