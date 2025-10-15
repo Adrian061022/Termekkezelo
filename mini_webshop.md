@@ -172,10 +172,9 @@ if ($isCLI) {
 1. Weben: Böngészőből az index.php-t megnyitva lehet termékeket kezelni.
 2. CLI: Parancssorból:
 
-| `php index.php add "Név" 4990 "Leírás" 10` | Új termék hozzáadása |
-| `php index.php list` | Összes termék listázása |
-| `php index.php delete 2` | Termék törlése |
-| `php index.php edit 1 "Új név" 5990 "Leírás" 15` | Termék frissítése |
+php index.php add "Laptop" 3500000 "Erős laptop" 5
+php index.php delete 3
+php index.php list
 
 ---
 
