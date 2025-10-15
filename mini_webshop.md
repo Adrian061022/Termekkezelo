@@ -259,6 +259,7 @@ if (php_sapi_name() === 'cli') {
 ---
 
 <details><summary>App/Models/Product.php</summary>
+ ```php
 <?php
 namespace App\Models;
 
@@ -336,7 +337,7 @@ class Product {
     }
 }
 ?>
-
+ ```
 </details> <details><summary>App/Services/ProductManager.php</summary>
 <?php
 namespace App\Services;
