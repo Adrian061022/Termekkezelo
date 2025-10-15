@@ -2,6 +2,7 @@
 
 Ez a projekt egy egyszerű **PHP alapú webshop-termékkezelő**, amely lehetővé teszi a termékek hozzáadását, szerkesztését, törlését és megtekintését **webes felületen** vagy **CLI parancssorban** is.  
 A cél egy **tanulható, jól dokumentált, PDO-t használó** PHP-alkalmazás bemutatása.
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/3cc0da54-56d5-479f-9097-40b2cc6b87e8" />
 
 ---
 
