@@ -259,7 +259,8 @@ if (php_sapi_name() === 'cli') {
 ---
 
 <details><summary>App/Models/Product.php</summary>
- ```php
+
+```php
 <?php
 namespace App\Models;
 
@@ -337,8 +338,10 @@ class Product {
     }
 }
 ?>
- ```
-</details> <details><summary>App/Services/ProductManager.php</summary>
+</details>
+<details><summary>App/Services/ProductManager.php</summary>
+php
+Kód másolása
 <?php
 namespace App\Services;
 
@@ -373,8 +376,10 @@ class Database {
     }
 }
 ?>
-
-</details> <details><summary>App/Views/index.view.php</summary>
+</details>
+<details><summary>App/Views/index.view.php</summary>
+html
+Kód másolása
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -456,8 +461,10 @@ button:hover { background: #34495e; }
 <?php endif; ?>
 </body>
 </html>
-
-</details> <details><summary>index.php</summary>
+</details>
+<details><summary>index.php</summary>
+php
+Kód másolása
 <?php
 require_once 'App/Models/Product.php';
 use App\Models\Product;
@@ -509,5 +516,4 @@ if ($isCLI) {
     $products = $product->getAll();
     require_once 'App/Views/index.view.php';
 }
-
 </details> ```
