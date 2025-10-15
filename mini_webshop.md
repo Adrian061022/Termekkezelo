@@ -31,6 +31,8 @@ index.php
 ## Felépítés
 
 ### Adatbázis kapcsolat (Product.php)
+A Product osztály létrehozza a PDO kapcsolatot, ellenőrzi a tábla meglétét, és biztosítja az oszlopokat:
+
 ```php
 $this->db = new PDO(
     "mysql:host=$host;dbname=$dbname;charset=utf8",
@@ -41,7 +43,11 @@ $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $this->createTableIfNotExists();
 $this->addStockColumnIfMissing();
 ```
-A Product osztály létrehozza a PDO kapcsolatot, ellenőrzi a tábla meglétét, és biztosítja az oszlopokat:
+1. PDO kapcsolat a MySQL adatbázishoz.
+2. Hibakezelés: kivétel dobása adatbázis hiba esetén.
+3. Tábla létrehozása: createTableIfNotExists().
+4. Stock oszlop ellenőrzése: addStockColumnIfMissing().
+
 ---
 ## Működési logika
 
