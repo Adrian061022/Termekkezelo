@@ -28,7 +28,21 @@ index.php
 - **CLI mód támogatása** (parancssori vezérlés)
 
 ---
+## Felépítés
 
+### Adatbázis kapcsolat (Product.php)
+```php
+$this->db = new PDO(
+    "mysql:host=$host;dbname=$dbname;charset=utf8",
+    $user,
+    $pass
+);
+$this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$this->createTableIfNotExists();
+$this->addStockColumnIfMissing();
+```
+A Product osztály létrehozza a PDO kapcsolatot, ellenőrzi a tábla meglétét, és biztosítja az oszlopokat:
+---
 ## Működési logika
 
 A projekt kétféle módon futtatható:
